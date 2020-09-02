@@ -3,12 +3,17 @@ const router = express.Router();
 const authenticate_session=require('../public/authenticate_session.js')
 const bcrypt=require("bcrypt");
 const passport = require("passport");
-const initializePassport=require('../passport-config')
-const newuser =require('../public/database.js')
-const users=newuser.users
+const mysql = require('mysql')
+
+const connection = mysql.createConnection({
+    host: 'localhost',
+    user: 'root',
+    password: 'masterchief011',
+    database: 'db'
+  })
 
 router.get("/",authenticate_session.checkAuthenticated, function(req,res){
-    res.render("home.ejs")
+    res.render("index.ejs")
 });
 
 
@@ -30,21 +35,21 @@ router.get("/register",authenticate_session.checkNotAuthenticated,function(req,r
 
 
 router.post("/register",authenticate_session.checkNotAuthenticated,async (req,res) =>{
+    //connection.connect()
     try {
-        
+       const id=Date.now().toString()
        const hashedPassword= await bcrypt.hash(req.body.password,10)
-        users.push({
-            id:Date.now().toString(),
-            name:req.body.name,
-            username:req.body.username,
-            password:hashedPassword
-      })
+       const sql="insert into signup_info values('"+req.body.name+"','"+req.body.username+"','"+req.body.email+"','"+req.body.country_code+"','"+req.body.contact+"','"+hashedPassword+"','"+id+"')"
+       connection.query(sql,function(err){
+           if (err) throw err
+           console.log("Successfully saved")
+       })
         res.redirect("/login")
     }
      catch {
             res.redirect("/register")
         }
-        console.log(users)
+        //connection.end()
 });
 
 
