@@ -13,7 +13,7 @@ const connection = mysql.createConnection({
   })
 
 router.get("/",authenticate_session.checkAuthenticated, function(req,res){
-    res.render("index.ejs")
+    res.render("home.ejs",{flag: 0})
 });
 
 
