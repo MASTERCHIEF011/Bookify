@@ -39,11 +39,16 @@ router.post("/register",authenticate_session.checkNotAuthenticated,async (req,re
     try {
        const id=Date.now().toString()
        const hashedPassword= await bcrypt.hash(req.body.password,10)
-       const sql="insert into signup_info values('"+req.body.name+"','"+req.body.username+"','"+req.body.email+"','"+req.body.country_code+"','"+req.body.contact+"','"+hashedPassword+"','"+id+"')"
-       connection.query(sql,function(err){
+       const sql="insert into profile_info values('"+req.body.email+"','"+req.body.first_name+"','"+req.body.last_name+"','"+req.body.dob+"','"+req.body.contact+"','"+req.body.gender+"','"+req.body.address+"','"+req.body.city+"','"+req.body.zip+"','"+id+"')"
+       const sql1="insert into profile_login values('"+req.body.username+"','"+req.body.email+"','"+hashedPassword+"')"
+       
+       
+       connection.query(sql1,function(err){
            if (err) throw err
-           console.log("Successfully saved")
+           connection.query(sql,function(err){
+                console.log("Successfully saved")
        })
+    })
         res.redirect("/login")
     }
      catch {

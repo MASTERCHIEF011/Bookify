@@ -14,7 +14,8 @@ const methodOverride=require('method-override')
 const landingRoutes =require('./routes/landing_routes.js')
 const homeRoutes =require('./routes/home_routes.js')
 const passportConfig=require('./passport-config.js')
-
+const authenticateUser = require('./passport-config.js')
+const fetch = require('./database/fetch_data.js')
 app.set("view engine","ejs")
 app.use(bodyParser.urlencoded({extended:false}))
 app.use(flash())
@@ -32,6 +33,11 @@ app.use(express.static(path.join(__dirname, './views')))
 app.use(landingRoutes)
 app.use(homeRoutes)
 
+
+// app.use(function(req, res, next){
+    
+    
+// })
 app.listen(3000,function(){
     console.log("server has started")
 })
