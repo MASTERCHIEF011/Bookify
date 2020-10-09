@@ -9,6 +9,7 @@ const session=require('express-session')
 const passport=require('passport')
 const path= require("path")
 const methodOverride=require('method-override')
+const sendMail = require('./mail');
 
 
 const landingRoutes =require('./routes/landing_routes.js')
@@ -18,6 +19,7 @@ const authenticateUser = require('./passport-config.js')
 const fetch = require('./database/fetch_data.js')
 app.set("view engine","ejs")
 app.use(bodyParser.urlencoded({extended:false}))
+app.use(express.json());
 app.use(flash())
 app.use(session({
     secret: process.env.SESSION_SECRET,
