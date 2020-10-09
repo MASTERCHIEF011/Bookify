@@ -72,7 +72,7 @@ const connection = mysql.createConnection({
       callback(true,null)
     })
   },
-  add_to_wishlist :function(username,item_name,callback){
+  add_to_wishlist :function(username,item_name){
     const query="select buyer_id from buyer_profile where user_id='"+username+"'"
     const query1="select item_id from inventory where item_name='"+item_name+"'"
     connection.query(query,(err,rows)=>{
@@ -82,10 +82,7 @@ const connection = mysql.createConnection({
             const query2="insert into wishlist values('"+rows[0].buyer_id+"','"+rows1[0].item_id+"','"+item_name+"')"
             connection.query(query2,(err)=>{
               if(!err){
-                const query3="select buyer_id,item_id,item_name from wishlist where buyer_id=(Select buyer_id from buyer_profile where user_id='"+username+"')"
-                connection.query(query3,(err,result)=>{
-                  if(!err){
-                    callback(null,result)
+                    console.log("Successfully added")
                   }
                 })
                 
@@ -93,10 +90,19 @@ const connection = mysql.createConnection({
             })
           }
         })
-      }
-    })
+      
+    
 
     console.log(item_name)
     //const query="select "
+  },
+  delete_from_Wishlist :function(item_id){
+    console.log(item_id)
+    const query="delete from wishlist where item_id='"+item_id+"'"
+    connection.query(query,(err)=>{
+      if(!err){
+        console.log("Deleted Successfully")
+      }
+    })
   }
   }
