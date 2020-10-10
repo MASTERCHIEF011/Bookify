@@ -12,6 +12,10 @@ const connection = mysql.createConnection({
     database: 'db'
   })
 
+router.get("/contact_us",function(req,res){
+    res.render("contact_us1.ejs")
+})
+
 router.get("/",authenticate_session.checkAuthenticated, function(req,res){
     res.render("home.ejs",{flag: 0})
 });
