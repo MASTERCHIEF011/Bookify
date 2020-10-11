@@ -104,5 +104,9 @@ const connection = mysql.createConnection({
         console.log("Deleted Successfully")
       }
     })
+  },
+  add_to_inventory :function(){
+    
   }
+
   }
