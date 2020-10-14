@@ -57,26 +57,30 @@
         <div class="form-row">
           <div class="form-group col-md-6">
             <label for="item_name">Name</label>
-            <input type="text" class="form-control" id="item_name" placeholder="Enter Item Name">
+            <input type="text" class="form-control" id="item_name" placeholder="Enter Item Name" name="item_name">
           </div>
-          <div class="form-group col-md-4">
+          <div class="form-group col-md-2">
             <label for="item_type">Type</label>
-            <select id="item_type" class="form-control">
+            <select id="item_type" class="form-control" name="item_type">
               <option value="Book">Book</option>
               <option value="Magazine">Magazine</option>
               <option value="Stamp">Stamp</option>
             </select>
           </div>
           <div class="form-group col-md-2">
+            <label for="item_id">Item Id</label>
+            <input type="text" class="form-control" id="item_id" placeholder="Enter Item Id" name="item_id">
+          </div>
+          <div class="form-group col-md-2">
             <label for="quantity">Qty</label>
-            <input type="text" class="form-control" id="quantity" placeholder="Enter quantity">
+            <input type="text" class="form-control" id="quantity" placeholder="Enter quantity" name="quantity">
           </div>
         </div>
 
         <div class="form-row">
           <div class="form-group col-md-6">
             <label for="item_condition">Type</label>
-            <select id="item_condition" class="form-control">
+            <select id="item_condition" class="form-control" name="item_condition">
               <option value="factory_new">Factory New</option>
               <option value="minimal_wear">Minimal Wear</option>
               <option value="well_worn">Well Worn</option>
@@ -84,18 +88,18 @@
           </div>
           <div class="form-group col-md-6">
             <label for="price">Price</label>
-            <input type="text" class="form-control" id="price" placeholder="Enter Price (Integer Only)">
+            <input type="text" class="form-control" id="price" placeholder="Enter Price (Integer Only)" name="price">
           </div>
         </div>
         <div id="for_book">
           <div class="form-row">
             <div class="form-group col-md-6">
               <label for="isbn">ISBN</label>
-              <input type="text" class="form-control" id="isbn" placeholder="Enter ISBN">
+              <input type="text" class="form-control" id="isbn" placeholder="Enter ISBN" name="isbn">
             </div>
             <div class="form-group col-md-6">
               <label for="genre">Genre</label>
-              <select id="genre" class="form-control">
+              <select id="genre" class="form-control" name="genre">
                 <option value="Fiction">Fiction</option>
                 <option value="Non_Fiction">Non Fiction</option>
                 <option value="Literary">Literary</option>
@@ -116,11 +120,11 @@
           <div class="form-row">
             <div class="form-group col-md-6">
               <label for="author">Author</label>
-              <input type="text" class="form-control" id="author" placeholder="Enter Author Name">
+              <input type="text" class="form-control" id="author" placeholder="Enter Author Name" name="author">
             </div>
             <div class="form-group col-md-6">
-              <label for="publishers">Publisher</label>
-              <input type="text" class="form-control" id="publishers" placeholder="Enter Publisher Name">
+              <label for="publisher">Publisher</label>
+              <input type="text" class="form-control" id="publisher" placeholder="Enter Publisher Name" name="publisher">
             </div>
           </div>
         </div>
@@ -128,7 +132,7 @@
           <div class="form-row">
             <div class="form-group col-md-4">
               <label for="genre_magazine">Genre</label>
-              <select id="genre_magazine" class="form-control">
+              <select id="genre_magazine" class="form-control" name="genre_magazine">
                 <option value="Fiction">Fiction</option>
                 <option value="Non_Fiction">Non Fiction</option>
                 <option value="Literary">Literary</option>
@@ -145,11 +149,11 @@
             </div>
             <div class="form-group col-md-4">
               <label for="edition">Edition</label>
-              <input type="text" class="form-control" id="edition" placeholder="Enter Edition">
+              <input type="text" class="form-control" id="edition" placeholder="Enter Edition" name="edition">
             </div>
             <div class="form-group col-md-4">
               <label for="release_date">Release Date</label>
-              <input type="date" class="form-control" id="release_date" placeholder="Enter Date">
+              <input type="date" class="form-control" id="release_date" placeholder="Enter Date" name="release_date">
             </div>
           </div>
         </div>
@@ -158,15 +162,15 @@
           <div class="form-row">
             <div class="form-group col-md-6">
               <label for="country">Country</label>
-              <input type="text" class="form-control" id="country" placeholder="Enter Country">
+              <input type="text" class="form-control" id="country" placeholder="Enter Country" name="country">
             </div>
             <div class="form-group col-md-6">
               <label for="mfd_year">Mfd Year</label>
-              <input type="text" class="form-control" id="mfd_year" placeholder="Enter Mfd Year">
+              <input type="text" class="form-control" id="mfd_year" placeholder="Enter Mfd Year" name="mfd_year">
             </div>
           </div>
         </div>
-        <button type="button" class="btn btn-success" id="submit_btn">Success</button>
+        <button type="submit" class="btn btn-success" id="submit_btn">Sell</button>
       </div>
     </form>
   </div>
