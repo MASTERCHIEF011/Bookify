@@ -66,4 +66,19 @@ router.get('/books',(req,res)=>{
 router.get('/sell',(req,res)=>{
     res.render('sell.ejs')
 })
+
+router.post('/add_item_to_inventory',(req,res)=>{
+    const username=req.user[0].user_id
+   const data= fetch.get_sell_form_data(req,username)
+   res.redirect('/listings')
+})
+router.get('/listings',(req,res)=>{
+    const username=req.user[0].user_id
+    console.log("listing route",username)
+    fetch.fetch_listing(username,function(err,rows){
+        console.log(rows,"cot")
+       res.render('listing.ejs',{userData: rows})
+    })
+    
+})
 module.exports = router
