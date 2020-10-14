@@ -4,12 +4,14 @@ const authenticate_session=require('../public/authenticate_session.js')
 const bcrypt=require("bcrypt");
 const passport = require("passport");
 const mysql = require('mysql')
+const fetch=require('../database/fetch_data.js')
 
 const connection = mysql.createConnection({
     host: 'localhost',
     user: 'root',
     password: 'masterchief011',
-    database: 'db'
+    database: 'db',
+    multipleStatements: true
   })
 
 router.get("/contact_us",function(req,res){
@@ -44,12 +46,13 @@ router.post("/register",authenticate_session.checkNotAuthenticated,async (req,re
        const id=Date.now().toString()
        const hashedPassword= await bcrypt.hash(req.body.password,10)
        const sql="insert into profile_info values('"+req.body.email+"','"+req.body.first_name+"','"+req.body.last_name+"','"+req.body.dob+"','"+req.body.contact+"','"+req.body.gender+"','"+req.body.address+"','"+req.body.city+"','"+req.body.zip+"','"+id+"')"
-       const sql1="insert into profile_login values('"+req.body.username+"','"+req.body.email+"','"+hashedPassword+"')"
+       const sql1="insert into profile_login values('"+req.body.username+"','"+req.body.email+"','"+hashedPassword+"','"+id+"')"
        
        
        connection.query(sql1,function(err){
            if (err) throw err
            connection.query(sql,function(err){
+               fetch.populate_seller_buyer(req)
                 console.log("Successfully saved")
        })
     })
