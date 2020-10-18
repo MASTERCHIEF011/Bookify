@@ -18,7 +18,8 @@ router.delete('/logout',(req,res) => {
 router.get('/wishlist',(req,res)=>{
     const username=req.user[0].user_id
     fetch.fetch_wishlist(username,function(err,rows){
-        res.render('wishlist.ejs',{userData: rows})
+        result=Object.values(JSON.parse(JSON.stringify(rows)))
+        res.render('wishlist.ejs',{userData: result})
     })
     
 })
@@ -46,7 +47,6 @@ router.post('/email', (req, res) => {
     subject:req.body.subject,
     text:req.body.text
 };
-    console.log('aur batao ', Data);
 
     sendMail(Data.name, Data.email, Data.subject, Data.text, function(err, data) {
         if (err) {
@@ -61,7 +61,26 @@ router.post('/email', (req, res) => {
 
 //routes for categories
 router.get('/books',(req,res)=>{
-    req
+    fetch.fetch_all_books(function(err,rows){
+        result=Object.values(JSON.parse(JSON.stringify(rows)))
+        const flag=0
+        res.render('category.ejs',{userData: result,flag : flag})
+    })
+})
+router.get('/magazines',(req,res)=>{
+    fetch.fetch_all_magazines(function(err,rows){
+        console.log(rows,"check this")
+        result=Object.values(JSON.parse(JSON.stringify(rows)))
+        const flag=1
+        res.render('category.ejs',{userData: result,flag : flag})
+    })
+})
+router.get('/stamps',(req,res)=>{
+    fetch.fetch_all_stamps(function(err,rows){
+        result=Object.values(JSON.parse(JSON.stringify(rows)))
+        const flag=2
+        res.render('category.ejs',{userData: result,flag : flag})
+    })
 })
 router.get('/sell',(req,res)=>{
     res.render('sell.ejs')
@@ -69,15 +88,23 @@ router.get('/sell',(req,res)=>{
 
 router.post('/add_item_to_inventory',(req,res)=>{
     const username=req.user[0].user_id
-   const data= fetch.get_sell_form_data(req,username)
+   const data= fetch.add_to_inventory(req,username)
    res.redirect('/listings')
 })
+
+router.delete('/delete_from_inventory/:item_id',(req,res)=>{
+    const item_id=req.params.item_id
+    console.log(item_id,"lallu")
+    fetch.delete_from_inventory(item_id)
+        res.redirect("/listings")
+
+})
+
 router.get('/listings',(req,res)=>{
     const username=req.user[0].user_id
-    console.log("listing route",username)
     fetch.fetch_listing(username,function(err,rows){
-        console.log(rows,"cot")
-       res.render('listing.ejs',{userData: rows})
+        result=Object.values(JSON.parse(JSON.stringify(rows)))
+       res.render('listing.ejs',{userData: result})
     })
     
 })
