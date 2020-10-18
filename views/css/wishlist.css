@@ -2,3 +2,13 @@
     text-align: center !important;
 }
 #dlt_icon { color: inherit !important; } 
+body {
+    background: url(bg-registration-form-7.jpg) !important;
+	background-size: cover !important;
+	background-position: center !important;
+    color: white;
+}
+#table{
+    background-color: white !important;
+    border-radius: 30px;
+}
