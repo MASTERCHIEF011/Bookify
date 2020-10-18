@@ -1,0 +1,188 @@
+<%- include('../views/partials/header.ejs'); %>
+<%- include('../views/partials/sidenav.ejs'); %>
+
+<script src="./js/jquery.min.js"></script>
+<!-- Page Content  -->
+<div id="content">
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+
+            <button type="button" id="sidebarCollapse" class="btn btn-primary">
+                  <i class="fa fa-bars"></i>
+                  <span class="sr-only">Toggle Menu</span>
+                </button>
+            <button class="btn btn-dark d-inline-block d-lg-none ml-auto" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <i class="fa fa-bars"></i>
+                </button>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <div class="brand">
+                    <ul class="navbar-nav ml-auto">
+                        <li><a class="navbar-brand" href="/">Bookify</a></li>
+
+                        <li class="nav-item">
+                            <form class="form-inline" id="nav-form">
+                                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" id="input_bar">
+                                <button class="btn btn-outline-success my-2 my-sm-0" type="submit" id="nav-src-btn">Search</button>
+                            </form>
+                        </li>
+                    </ul>
+                </div>
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item"><a class="nav-link" href="/cart"><span><svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-cart3" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                      <path fill-rule="evenodd" d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .49.598l-1 5a.5.5 0 0 1-.465.401l-9.397.472L4.415 11H13a.5.5 0 0 1 0 1H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l.84 4.479 9.144-.459L13.89 4H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm7 0a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"/>
+                    </svg></span> Cart </a>
+                    </li>
+                    <li class="nav-item">
+                        <form action="/logout?_method=DELETE" method="POST" id="logout">
+                            <a class="nav-link" href="javascript:{}" onclick="document.getElementById('logout').submit(); return false;">Logout</a>
+                        </form>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="container" id="table">
+        <% if(flag==0){%>
+        <table class="table" id="for_book">
+            <thead>
+              <tr>
+                <th scope="col">S.N</th>
+                <th scope="col">Isbn</th>
+                <th scope="col">Id</th>
+                <th scope="col">Name</th>
+                <th scope="col">Author</th>
+                <th scope="col">Genre</th>
+                <th scope="col">Publisher</th>
+                <th scope="col">Condition</th>
+                <th scope="col">Quantity</th>
+                <th scope="col">Price</th>
+                <th scope="col"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <%if (userData.length!=0){
+                var i=1;
+                userData.forEach(function(rows){
+                  %>
+              <tr>
+                <th scope="row"><%=i; %></th>
+                <td ><%=rows.isbn %></td>
+                <td><%=rows.item_id %></td>
+                <td ><%=rows.item_name %></td>
+                <td><%=rows.author %></td>
+                <td><%=rows.genre %></td>
+                <td ><%=rows.publisher %></td>
+                <td><%=rows.item_condition %></td>
+                <td ><%=rows.quantity %></td>
+                <td><%=rows.price %></td>
+                <td><form action="/delete_fromsss_wishlist/<%=rows.item_id%>?_method=DELETE"  method="POST" id="delete_form"><button class="btn btn-sm btn-danger >Delete</button><a id="dlt_icon" return false;" href="javascript:{}"><svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-trash-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                  <path fill-rule="evenodd" d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5a.5.5 0 0 0-1 0v7a.5.5 0 0 0 1 0v-7z"/>
+                </svg></a></form></td>
+              </tr>
+              <% i++;}) %>
+            <% } else { %>
+              <tr>
+                <th scope="row">2</th>
+                <td>No data found</td>
+              </tr>
+              <% } %>
+            </tbody>
+          </table>
+          <%} else if(flag==1){%>
+          <table class="table" id="for_magazine">
+            <thead>
+              <tr>
+                <th scope="col">S.N</th>
+                <th scope="col">Id</th>
+                <th scope="col">Name</th>
+                <th scope="col">Edition</th>
+                <th scope="col">Genre</th>
+                <th scope="col">Release</th>
+                <th scope="col">Condition</th>
+                <th scope="col">Quantity</th>
+                <th scope="col">Price</th>
+                <th scope="col"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <%if (userData.length!=0){
+                var i=1;
+                userData.forEach(function(rows){
+                  %>
+              <tr>
+                <th scope="row"><%=i; %></th>
+                <td><%=rows.item_id %></td>
+                <td><%=rows.item_name %></td>
+                <td><%=rows.edition %></td>
+                <td><%=rows.genre %></td>
+                <td><%=rows.release_date %></td>
+                <td><%=rows.item_condition %></td>
+                <td><%=rows.quantity %></td>
+                <td><%=rows.price %></td>
+                <td><form action="/delete_fsssrom_wishlist/<%=rows.item_id%>?_method=DELETE"  method="POST" id="delete_form"><button class="btn btn-sm btn-danger >Delete</button><a id="dlt_icon" return false;" href="javascript:{}"><svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-trash-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                  <path fill-rule="evenodd" d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5a.5.5 0 0 0-1 0v7a.5.5 0 0 0 1 0v-7z"/>
+                </svg></a></form></td>
+              </tr>
+              <% i++;}) %>
+            <% } else { %>
+              <tr>
+                <th scope="row">2</th>
+                <td>No data found</td>
+              </tr>
+              <% } %>
+            </tbody>
+          </table>
+
+          <% }else{%> 
+          <table class="table" id="for_stamp">
+            <thead>
+              <tr>
+                <th scope="col">S.N</th>
+                <th scope="col">Id</th>
+                <th scope="col">Name</th>
+                <th scope="col">Country</th>
+                <th scope="col">Manufacturing Year</th>
+                <th scope="col">Condition</th>
+                <th scope="col">Quantity</th>
+                <th scope="col">Price</th>
+                <th scope="col"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <%if (userData.length!=0){
+                var i=1;
+                userData.forEach(function(rows){
+                  %>
+              <tr>
+                <th scope="row"><%=i; %></th>
+                <td><%=rows.item_id %></td>
+                <td ><%=rows.item_name %></td>
+                <td><%=rows.country %></td>
+                <td ><%=rows.manufacturing_year %></td>
+                <td><%=rows.item_condition %></td>
+                <td ><%=rows.quantity %></td>
+                <td><%=rows.price %></td>
+                <td><form action="/delete_sssssssfrom_wishlist/<%=rows.item_id%>?_method=DELETE"  method="POST" id="delete_form"><button class="btn btn-sm btn-danger >Delete</button><a id="dlt_icon" return false;" href="javascript:{}"><svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-trash-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                  <path fill-rule="evenodd" d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5a.5.5 0 0 0-1 0v7a.5.5 0 0 0 1 0v-7z"/>
+                </svg></a></form></td>
+              </tr>
+              <% i++;}) %>
+            <% } else { %>
+              <tr>
+                <th scope="row">2</th>
+                <td>No data found</td>
+              </tr>
+              <% } %>
+            </tbody>
+          </table>
+          <%}%>
+    </div>
+</div>
+</div>
+
+
+
+
+<%- include('../views/partials/footer.ejs'); %>
