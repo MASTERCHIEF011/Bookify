@@ -30,7 +30,7 @@ const connection = mysql.createConnection({
       })
   },
   fetch_all_books :function(callback){
-    const query="select * from books"
+    const query="select * from inventory inner join book_details_key using(item_id) inner join book_details_info using(isbn)"
     connection.query(query,(err,rows)=>{
       if (!err) {
         callback(null,rows)
@@ -41,7 +41,7 @@ const connection = mysql.createConnection({
 
   },
   fetch_all_magazines :function(callback){
-    const query="select * from magazines"
+    const query="select * from inventory inner join magazine_details using(item_id)"
     connection.query(query,(err,rows)=>{
       if (!err) {
         callback(null,rows)
@@ -52,7 +52,7 @@ const connection = mysql.createConnection({
 
   },
   fetch_all_stamps :function(callback){
-    const query="select * from stamps"
+    const query="select * from inventory inner join stamp_details using(item_id)"
     connection.query(query,(err,rows)=>{
       if (!err) {
         callback(null,rows)
@@ -106,10 +106,15 @@ const connection = mysql.createConnection({
       }
     })
   },
-  add_to_inventory :function(){
-    const query="insert into book_detail_info values()"
+  delete_from_inventory :function(item_id){
+    const query="delete from inventory where item_id='"+item_id+"'"
+    connection.query(query,(err)=>{
+      if(!err){
+        console.log("Deleted Successfully")
+      }
+    })
   },
-  get_sell_form_data :function(req,username){
+  add_to_inventory :function(req,username){
     if(req.body.item_type == "Book"){
       const data={
           item_id : req.body.item_id,
@@ -135,8 +140,6 @@ const connection = mysql.createConnection({
         }
       })
       return data
-      // console.log(data,"rinkiya")
-      //
   }
   else if(req.body.item_type == "Magazine"){
       const data={
@@ -148,9 +151,9 @@ const connection = mysql.createConnection({
           price : req.body.price,
           genre : req.body.genre,
           edition : req.body.edition,
-          release_date : req.body.release_date
+          release : req.body.release
       }
-      const query1="insert into magazine_details values('"+data.item_id+"','"+data.genre+"','"+data.edition+"','"+data.release_date+"')"
+      const query1="insert into magazine_details values('"+data.item_id+"','"+data.genre+"','"+data.edition+"','"+data.release+"')"
       const query="insert into inventory values('"+data.item_id+"','"+data.item_name+"','"+data.item_type+"','"+data.quantity+"','"+data.item_condition+"','"+data.price+"')"
       const query2="insert into add_to(item_id,seller_id) select '"+data.item_id+"', t.seller_id from seller_profile t where t.user_id='"+username+"'; "
       connection.query(query,(err)=>{
