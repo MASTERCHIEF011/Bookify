@@ -40,6 +40,9 @@ app.use(homeRoutes)
     
     
 // })
+
+
+
 app.listen(3000,function(){
     console.log("server has started")
 })

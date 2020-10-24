@@ -4,9 +4,13 @@ const methodOverride=require('method-override')
 const fetch=require('../database/fetch_data.js')
 const sendMail = require('../mail');
 
-
 router.get('/cart',(req,res)=>{
-    res.render('checkout.ejs')
+    const username=req.user[0].user_id
+    fetch.display_cart_item(username,function (err,rows){
+        let ans=Object.values(JSON.parse(JSON.stringify(rows)))
+        res.render('checkout1.ejs',{userData:ans})
+    })
+    
 })
 router.get('/',(req,res)=>{
     res.render('home.ejs')
@@ -108,4 +112,44 @@ router.get('/listings',(req,res)=>{
     })
     
 })
+router.post('/add_to_cart/:item_id',(req,res)=>{
+    const item_id=req.params.item_id
+    const username=req.user[0].user_id
+    fetch.add_to_cart(username,item_id)
+    res.redirect('/')
+})
+
+router.delete('/delete_from_cart/:cart_id',(req,res)=>{
+    const cart_id=req.params.cart_id
+    fetch.delete_from_cart(cart_id)
+    res.redirect('/cart')
+})
+
+router.get('/profile',(req,res)=>{
+    res.render('Profile.ejs')
+})
+
+router.post('/edit_profile',(req,res)=>{
+    const username=req.user[0].user_id
+    fetch.edit_profile(username,req)
+    res.redirect('/')
+})
+
+router.post('/add_to_payment/:total',(req,res)=>{
+    const total=req.params.total
+    const username=req.user[0].user_id
+    console.log(total)
+    fetch.add_to_payment(req,total,username)
+    res.redirect('/')
+})
+
+router.get('/orders',(req,res)=>{
+    const username=req.user[0].user_id
+    fetch.fetch_orders(username,function(err,rows){
+        console.log(rows)
+        result=Object.values(JSON.parse(JSON.stringify(rows)))
+       res.render('Orders.ejs',{userData: result})
+    })
+})
+
 module.exports = router

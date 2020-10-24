@@ -226,8 +226,89 @@ populate_seller_buyer: function(req){
       throw err
     }
   })
-}
+},
 
+add_to_cart: function(username,item_id){
+  const query="select buyer_id from buyer_profile where user_id='"+username+"'"
+  const query1="select item_name,price from inventory where item_id='"+item_id+"'"
+  
+  connection.query(query,(err,rows)=>{
+    if(!err){
+      console.log(rows,"ppppp")
+      connection.query(query1,(err,rows1)=>{
+        if(!err){
+          console.log(rows1,"bbbbb")
+          const query2="insert into cart(buyer_id,item_id,item_name,quantity,cost) values('"+rows[0].buyer_id+"','"+item_id+"','"+rows1[0].item_name+"',1,'"+rows1[0].price+"')"
+        connection.query(query2)
+      }
+      // else{
+      //   callback(true,null)
+      // }
+      })
+    }
+  })
+},
+display_cart_item: function(username,callback){
+  const query="select cart_id,item_name,cost from cart where buyer_id=(select buyer_id from buyer_profile where user_id='"+username+"')"
+  connection.query(query,(err,rows)=>{
+    if(!err){
+      callback(null,rows)
+    }
+    else{
+      callback(true,null)
+    }
+  })
+},
+
+delete_from_cart: function(cart_id){
+  const query="delete from cart where cart_id='"+cart_id+"'"
+    connection.query(query,(err)=>{
+      if(!err){
+        console.log("Deleted Successfully")
+      }
+    })
+},
+
+edit_profile: function(username,req){
+  const query="Update seller_info set first_name='"+req.body.first_name+"',last_name='"+req.body.last_name+"',street='"+req.body.street+"',city='"+req.body.city+"',zip='"+req.body.zip+"' where email=(select email from seller_profile where user_id='"+username+"') "
+  const query1="Update seller_phone set seller_contact='"+req.body.contact+"' where seller_id=(select seller_id from seller_profile where user_id='"+username+"')"
+  connection.query(query,(err)=>{
+    if(!err){
+      connection.query(query1)
+    }
+  })
+},
+add_to_payment: function(req,total,username){
+  const query="insert into payment (amount,payment_type,card_no) values('"+total+"','"+req.body.paymentType+"','"+req.body.card_number+"')"
+  connection.query(query,(err)=>{
+    if(!err){
+      const query1="select * from cart where buyer_id=(select buyer_id from buyer_profile where user_id='"+username+"')"
+      connection.query(query1,(err,rows)=>{
+        if(!err){
+          result=Object.values(JSON.parse(JSON.stringify(rows)))
+          result.forEach(function(rows1){
+            const query2="insert into past_orders values('"+rows1.buyer_id+"','"+rows1.item_id+"','"+rows1.item_name+"','"+rows1.quantity+"','"+rows1.cost+"')"
+          connection.query(query2)
+          console.log(rows1,"lets see")
+          })
+        }
+      })
+      
+    }
+  })
+},
+fetch_orders: function(username,callback){
+  const query="select * from past_orders where buyer_id=(select buyer_id from buyer_profile where user_id='"+username+"')"
+  connection.query(query,(err,rows)=>{
+    if(!err){
+      console.log(rows,"orders")
+      callback(null,rows)
+    }
+    else{
+      callback(true,null)
+    }
+  })
+}
 
 
 

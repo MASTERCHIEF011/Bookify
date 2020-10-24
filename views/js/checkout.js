@@ -7,42 +7,42 @@ const store = new Vuex.Store({
     state: {
         products: [{
                 id: "727026",
-                name: "Halo",
+                item_name: "Halo",
                 image: "https://images-na.ssl-images-amazon.com/images/I/61l7pLOVdYL.jpg",
-                price: 34
+                cost: 34
             },
             {
                 id: "727027",
-                name: "Stamp",
+                item_name: "Stamp",
                 image: "https://www.history.com/.image/t_share/MTU3ODc4NjAwNTY2OTc0MTc1/feature-stamp.jpg",
-                price: 78
+                cost: 78
             },
             {
                 id: "727028",
-                name: "Forbes 400",
+                item_name: "Forbes 400",
                 image: "https://thumbor.forbes.com/thumbor/960x0/https%3A%2F%2Fblogs-images.forbes.com%2Fluisakroll%2Ffiles%2F2014%2F02%2Fforbes-400-cover-092313-warren-buffett-789x10244.jpg",
-                price: 109
+                cost: 109
             }
         ],
         shippingMethods: [{
                 id: "gls",
                 name: "GLS",
                 desc: "GLS - Package delivered directly to the door",
-                price: "10",
+                cost: "10",
                 type: "private"
             },
             {
                 id: "fedex",
                 name: "FedEx",
                 desc: "FedEx - Package delivered directly to the door",
-                price: "10",
+                cost: "10",
                 type: "private"
             },
             {
                 id: "dhl",
                 name: "DHL",
                 desc: "DHL - Package delivered directly to your company",
-                price: "12",
+                cost: "12",
                 type: "company"
             }
         ],
@@ -58,8 +58,8 @@ const store = new Vuex.Store({
             product.quantity = 1;
             state.basket.orderlines.push(product);
         },
-        setShippingPrice(state, price) {
-            state.basket.shippingPrice = state.basket.shippingPrice + parseInt(price);
+        setShippingPrice(state, cost) {
+            state.basket.shippingPrice = state.basket.shippingPrice + parseInt(cost);
             store.dispatch("reCalculateBasket");
         },
         setOrderlineValues(state, props) {
@@ -67,14 +67,14 @@ const store = new Vuex.Store({
                 x => x.id === props.productId
             );
             orderline.quantity = parseInt(props.quantity);
-            orderline.price = orderline.price * parseInt(props.quantity);
+            orderline.cost = orderline.cost * parseInt(props.quantity);
             store.dispatch("reCalculateBasket");
         },
         reCalculateBasket(state) {
             var totalProductPrice = 0;
             state.basket.basketTotal = 0; // Reset basketTotal
             $.each(state.basket.orderlines, function(index, product) {
-                totalProductPrice = totalProductPrice + product.price;
+                totalProductPrice = totalProductPrice + product.cost;
             });
 
             state.basket.basketTotal =
@@ -101,8 +101,8 @@ const store = new Vuex.Store({
                 context.commit("reCalculateBasket");
             });
         },
-        calculateShipping(context, price) {
-            context.commit("setShippingPrice", price);
+        calculateShipping(context, cost) {
+            context.commit("setShippingPrice", cost);
         },
         updateOrderline(context, props) {
             context.commit("setOrderlineValues", {
@@ -327,7 +327,7 @@ new Vue({
         cartSummary() {
             var cartSummary = [];
             $.each(this.products, function(index, product) {
-                cartSummary.push(product.name);
+                cartSummary.push(product.item_name);
             });
 
             return cartSummary;
@@ -336,10 +336,10 @@ new Vue({
     watch: {
         shipping: {
             handler: function(shipping, oldShipping) {
-                var price = this.shippingMethods.find(x => x.id === shipping).price;
+                var cost = this.shippingMethods.find(x => x.id === shipping).cost;
                 var oldPrice = this.shippingMethods.find(x => x.id === oldShipping)
-                    .price;
-                this.calculateShipping(price, oldPrice);
+                    .cost;
+                this.calculateShipping(cost, oldPrice);
             },
             deep: true
         }
@@ -367,11 +367,11 @@ new Vue({
             console.log(productId);
             this.$store.dispatch("removeProduct", productId);
         },
-        calculateShipping(price, oldPrice) {
+        calculateShipping(cost, oldPrice) {
             if (oldPrice !== undefined) {
                 this.$store.dispatch("calculateShipping", -oldPrice);
             }
-            this.$store.dispatch("calculateShipping", price);
+            this.$store.dispatch("calculateShipping", cost);
         },
         setCompanyShipping() {
             if (this.company) {

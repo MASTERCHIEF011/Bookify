@@ -6,6 +6,7 @@ const passport = require("passport");
 const mysql = require('mysql')
 const fetch=require('../database/fetch_data.js')
 
+
 const connection = mysql.createConnection({
     host: 'localhost',
     user: 'root',
@@ -63,7 +64,6 @@ router.post("/register",authenticate_session.checkNotAuthenticated,async (req,re
         }
         //connection.end()
 });
-
 
 
 module.exports=router;
