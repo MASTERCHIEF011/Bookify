@@ -8,7 +8,7 @@ router.get('/cart',(req,res)=>{
     const username=req.user[0].user_id
     fetch.display_cart_item(username,function (err,rows){
         let ans=Object.values(JSON.parse(JSON.stringify(rows)))
-        res.render('checkout1.ejs',{userData:ans})
+        res.render('checkout.ejs',{userData:ans})
     })
     
 })
